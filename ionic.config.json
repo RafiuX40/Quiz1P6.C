@@ -1,0 +1,7 @@
+{
+  "name": "EventOrganizer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
