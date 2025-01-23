@@ -1,12 +1,13 @@
-import { Component, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
-// Modelo de Evento
+
 interface Event {
-  id?: string;
+  id: string;  
   name: string;
   startDate: Date;
   endDate: Date;
@@ -15,7 +16,6 @@ interface Event {
   managerName: string;
   managerPhone: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +26,12 @@ class EventService {
 
   events$ = this.eventsSubject.asObservable();
 
-  addEvent(event: Event) {
-    event.id = this.generateId();
-    this.events.push(event);
+  addEvent(event: Omit<Event, 'id'>) {
+    const newEvent: Event = {
+      ...event,
+      id: this.generateId()
+    };
+    this.events.push(newEvent);
     this.eventsSubject.next([...this.events]);
   }
 
@@ -79,7 +82,8 @@ export class HomePage {
 
   onSubmit() {
     if (this.eventForm.valid) {
-      this.eventService.addEvent(this.eventForm.value);
+      const { id, ...eventData } = this.eventForm.value;
+      this.eventService.addEvent(eventData);
       this.eventForm.reset();
     }
   }
