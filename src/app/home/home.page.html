@@ -1,15 +1,57 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      EventOrganizer
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Nombre del Evento</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
 
-    
+    <ion-item>
+      <ion-label position="floating">Fecha Inicio</ion-label>
+      <ion-datetime formControlName="startDate"></ion-datetime>
+    </ion-item>
 
-  
+    <ion-item>
+      <ion-label position="floating">Fecha Fin</ion-label>
+      <ion-datetime formControlName="endDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Ubicación</ion-label>
+      <ion-input formControlName="location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Confirmado</ion-label>
+      <ion-checkbox formControlName="confirmed"></ion-checkbox>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Nombre del Encargado</ion-label>
+      <ion-input formControlName="managerName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Teléfono del Encargado</ion-label>
+      <ion-input type="tel" formControlName="managerPhone"></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" expand="block">Guardar Evento</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-item-sliding *ngFor="let event of events$ | async">
+      <ion-item>
+        <ion-label>
+          <h2>{{ event.name }}</h2>
+          <p>{{ event.startDate | date }} - {{ event.endDate | date }}</p>
+          <p>{{ event.location }}</p>
+          <p>{{ event.managerName }} - {{ event.managerPhone }}</p>
+        </ion-label>
+        <ion-checkbox 
+          [checked]="event.confirmed" 
+          (ionChange)="toggleConfirmation(event.id)"
+        ></ion-checkbox>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>
